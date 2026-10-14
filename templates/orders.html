@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">ORDER HISTORY</p><h1>Recent orders</h1><p>Last 50 orders saved on this computer.</p></div>
+<div class="panel">
+{% if orders %}
+  {% for order in orders %}
+  <div class="order-row">
+    <div><strong>Order #{{ order.id }}</strong><p>{{ order.created_at }}</p></div>
+    <div class="order-items">{{ order.items_json|length }} characters of item data</div>
+    <strong>₹{{ "%.2f"|format(order.total) }}</strong>
+  </div>
+  {% endfor %}
+{% else %}
+  <div class="empty"><div>🧾</div><h2>No orders yet</h2><p>Your completed demo orders will appear here.</p></div>
+{% endif %}
+</div>
+{% endblock %}

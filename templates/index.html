@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">SMART SHOPPING · QUICK CHECKOUT</p>
+    <h1>Shop more.<br><span>Wait less.</span></h1>
+    <p class="hero-copy">Add products to your cart, calculate your bill instantly, and create a checkout QR receipt.</p>
+    <a class="button" href="#products">Browse products ↓</a>
+  </div>
+  <div class="hero-card">
+    <div class="hero-icon">⚡</div>
+    <h3>Fast checkout</h3>
+    <p>One cart. One bill. Less waiting.</p>
+    <div class="mini-stats"><span>10 demo products</span><span>QR-ready</span></div>
+  </div>
+</section>
+
+<section class="scan-panel">
+  <div>
+    <h2>Add using product code</h2>
+    <p>Enter a code from the product list. In a real deployment, this can be connected to a phone camera QR scanner.</p>
+  </div>
+  <form class="scan-form" action="{{ url_for('scan') }}" method="post">
+    <input name="code" placeholder="Example: RICE001" required>
+    <button class="button" type="submit">Add code</button>
+  </form>
+</section>
+
+<section id="products">
+  <div class="section-heading">
+    <div><p class="eyebrow">YOUR STORE</p><h2>Browse products</h2></div>
+    <form class="search" method="get" action="{{ url_for('index') }}">
+      <input name="q" value="{{ search }}" placeholder="Search products or code">
+      <button class="button secondary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="filters">
+    <a class="{{ 'active' if selected_category == 'All' else '' }}" href="{{ url_for('index') }}">All</a>
+    {% for category in categories %}
+      <a class="{{ 'active' if selected_category == category else '' }}" href="{{ url_for('index', category=category, q=search) }}">{{ category }}</a>
+    {% endfor %}
+  </div>
+  <div class="product-grid">
+    {% for p in products %}
+    <article class="product-card">
+      <div class="product-emoji">
+        {% if p.category == 'Groceries' %}🌾{% elif p.category == 'Dairy' %}🥛{% elif p.category == 'Bakery' %}🍞{% elif p.category == 'Fruits' %}🍎{% elif p.category == 'Snacks' %}🍪{% else %}🧴{% endif %}
+      </div>
+      <p class="category">{{ p.category }}</p>
+      <h3>{{ p.name }}</h3>
+      <p class="code">Code: {{ p.code }}</p>
+      <div class="product-bottom"><strong>₹{{ "%.2f"|format(p.price) }}</strong>
+        <form action="{{ url_for('add', product_id=p.id) }}" method="post"><button class="add-button" type="submit">+ Add</button></form>
+      </div>
+    </article>
+    {% else %}
+      <p>No products found. Try a different search.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

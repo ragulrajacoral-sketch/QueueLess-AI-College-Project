@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">FINAL STEP</p><h1>Checkout</h1><p>Confirm your cart and generate a demo receipt.</p></div>
+<div class="checkout-layout">
+  <section class="panel">
+    <h2>Order items</h2>
+    {% for item in items %}
+    <div class="summary-line"><span>{{ item.name }} × {{ item.qty }}</span><strong>₹{{ "%.2f"|format(item.subtotal) }}</strong></div>
+    {% endfor %}
+    <div class="summary-line total"><span>Total amount</span><span>₹{{ "%.2f"|format(total) }}</span></div>
+  </section>
+  <aside class="panel">
+    <h2>Complete demo checkout</h2>
+    <p>This demo stores the order in a local SQLite database. It does not collect payment details or process real payments.</p>
+    <form method="post"><button class="button full" type="submit">Confirm order & create QR</button></form>
+    <a class="text-link" href="{{ url_for('cart') }}">Back to cart</a>
+  </aside>
+</div>
+{% endblock %}

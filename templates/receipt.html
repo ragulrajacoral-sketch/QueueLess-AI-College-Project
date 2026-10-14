@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="receipt panel">
+  <div class="success-mark">✓</div>
+  <p class="eyebrow">ORDER CREATED</p>
+  <h1>Thank you for shopping!</h1>
+  <p>Order #{{ order_id }} · {{ created_at }}</p>
+  <div class="receipt-items">
+    {% for item in items %}
+    <div class="summary-line"><span>{{ item.name }} × {{ item.qty }}</span><span>₹{{ "%.2f"|format(item.subtotal) }}</span></div>
+    {% endfor %}
+    <div class="summary-line total"><strong>Total</strong><strong>₹{{ "%.2f"|format(total) }}</strong></div>
+  </div>
+  <img class="qr" src="{{ qr_data }}" alt="Order QR code">
+  <p class="muted">Demo order QR: order ID and total only. This is not a payment QR.</p>
+  <div class="receipt-actions"><a class="button" href="{{ url_for('index') }}">Shop again</a><button class="button secondary" onclick="window.print()" type="button">Print receipt</button></div>
+</div>
+{% endblock %}
